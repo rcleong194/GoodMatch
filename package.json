@@ -1,0 +1,9 @@
+{
+  "name": "good-match",
+  "version": "0.0.0",
+  "description": "GoodMatch",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  }
+}
