@@ -4,6 +4,10 @@ var parser = require('csv-parse/lib/sync');
 
 var fs = require('fs');
 
+if (!fs.existsSync('debug.txt')) {
+    fs.writeFileSync('debug.txt','');
+}
+
 let conOrcsv = readlineSync.question("Would you like to use the console or input .csv file? (con/csv)");
 if (conOrcsv == 'con') {
     let name1 = readlineSync.question("Input name 1: ");
@@ -24,7 +28,8 @@ if (conOrcsv == 'con') {
 
         pairMaleFemale(records);
     } catch {
-        console.log("File does not exist");
+        console.log("File does not exist or there are formatting errors in the file");
+        fs.appendFileSync("debug.txt", new Date() + ": Given file name does not exist. If file does exist check formatting of items \n");
         process.exit();
     }
     
@@ -43,6 +48,7 @@ function pairMaleFemale(data) {
     for (let i = 0; i < data.length; i++) {
         if (data[i].length > 2) {
             console.log("Only input the name and gender separated by a comma (E.g. John, m)");
+            fs.appendFileSync("debug.txt", new Date() + ": Formatting error in .csv file (should only be in format 'name, [m/f]' != "+ data[i] +"\n");
             process.exit();
         }
         numCheck(data[i][0]);
@@ -56,6 +62,7 @@ function pairMaleFemale(data) {
                 break;
             default:
                 console.log("Gender must be 'f' or 'm'");
+                fs.appendFileSync("debug.txt", new Date() + ": Gender must be 'f' or 'm' \n");
                 process.exit();
                 break;
         }
@@ -71,7 +78,7 @@ function pairMaleFemale(data) {
     pairResults = pairResults.sort(function (a, b) { return b[0] - a[0]; });
     let txt = toTextFile(pairResults);
     var file = fs.createWriteStream('output.txt');
-    file.on('error', function (err) {  });
+
     txt.forEach(function (v) { file.write(v + '\n'); });
     file.end();
     //return [males, females];
@@ -129,6 +136,7 @@ function numCheck(s) {
     for (let i = 0; i < s.length; i++) {
         if (s[i].match(/[A-Z|a-z]/i) == null) {
             console.log("Names can only be letters");
+            fs.appendFileSync("debug.txt", new Date() + ": An incorrect name was given '" + s +"' \n");
             process.exit();
         }
     }
