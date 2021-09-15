@@ -11,3 +11,5 @@
  Please note the following:
  Format for the csv files should be in the format 'name, [m/f]' on each individual line (there are no numbers on each line)
  There is a debugging log in 'debug.txt'
+
+The project states there are 2 contributors. Both of these are my accounts, one is my personal account and the other is my universtiy account. My setup using git desktop is a bit strange
